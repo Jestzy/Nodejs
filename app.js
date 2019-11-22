@@ -140,6 +140,12 @@ app.post("/login", passport.authenticate("local",
     }), function(req, res){
 });
 
+
+app.get("/logout", function(req, res){
+    req.logOut();
+    res.redirect("/campgrounds");
+})
+
 app.listen(3000, function(){
     console.log("Campground App has started!!!");
 });
