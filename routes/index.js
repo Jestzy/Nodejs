@@ -1,20 +1,22 @@
 var express = require("express");
 var router = express.Router();
+var passport = require("passport");
+var User = require("../models/User");
 
 
-route.get("/", function(req, res){
+router.get("/", function(req, res){
     res.render("landing");
 });
 // ==========
 // AUTH ROUTE
 // ==========
 //  show register form
-route.get("/register", function(req, res){
+router.get("/register", function(req, res){
     res.render("register");
 });
 
 //handle signup logic
-route.post("/register", function(req, res){
+router.post("/register", function(req, res){
     var newUser = new User({username: req.body.username});
     User.register(newUser,req.body.password, function(err,user){
         if(err){
@@ -27,18 +29,18 @@ route.post("/register", function(req, res){
     });
 });
 //show login form
-route.get("/login", function(req, res){
+router.get("/login", function(req, res){
     res.render("login");
 });
 //handel login logic
-route.post("/login", passport.authenticate("local", 
+router.post("/login", passport.authenticate("local", 
     {
         successRedirect: "/campgrounds",
         failureRedirect: "/login"
     }), function(req, res){
 });
 
-route.get("/logout", function(req, res){
+router.get("/logout", function(req, res){
     req.logOut();
     res.redirect("/campgrounds");
 });

@@ -11,7 +11,7 @@ var Campground    = require("./models/campgrounds"),
     
 var commentRoutes    = require("./routes/comments"),
     campgroundRoutes = require("./routes/campgrounds"),
-    authRoutes       = require("./routes/index");
+    indexRoutes       = require("./routes/index");
 
 mongoose.connect('mongodb://localhost:27017/yelp_camp',
 {useNewUrlParser: true, useUnifiedTopology: true})
@@ -38,9 +38,9 @@ app.use(function(req, res, next){
     next();
 })
 
-app.use(authRoutes);
-app.use(commentRoutes);
-app.use(campgroundRoutes);
+app.use(indexRoutes);
+app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/campgrounds", campgroundRoutes);
 
 app.listen(3000, function(){
     console.log("Campground App has started!!!");

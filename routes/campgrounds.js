@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
+var Campground = require("../models/campgrounds");
 
-
-router.get("/campgrounds", function(req, res){
+router.get("/", function(req, res){
 
     // Get all camground from DB
     Campground.find({},function(err, allCampgrounds){
@@ -13,12 +13,16 @@ router.get("/campgrounds", function(req, res){
         }
     });
 });
-router.post("/campgrounds",function(req, res){
+router.post("/", isLoggedIn, function(req, res){
     // get data from form and add to array
     var name = req.body.name;
     var image = req.body.image;
-    var description = req.body.description;
-    var newCamground = {name: name, image: image, description: description};
+    var desc = req.body.description;
+    var author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    var newCamground = {name: name, image: image, description: desc, author: author};
     Campground.create(newCamground, function(err, newlyCreated){
         if(err){
             console.log(err);
@@ -28,11 +32,11 @@ router.post("/campgrounds",function(req, res){
     });
 });
 
-router.get("/campgrounds/new", function(req, res){
+router.get("/new",isLoggedIn ,function(req, res){
     res.render("campgrounds/new");
 });
 
-route.get("/campgrounds/:id", function(req, res){
+router.get("/:id", function(req, res){
     Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
         if(err){
             console.log(err);
@@ -42,5 +46,12 @@ route.get("/campgrounds/:id", function(req, res){
         }
     }); 
 });
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+};
 
 module.exports  = router;
