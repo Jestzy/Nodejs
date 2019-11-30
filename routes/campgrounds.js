@@ -48,13 +48,22 @@ router.get("/:id", function(req, res){
 });
 
 router.get("/:id/edit", function(req, res){
-    Campground.findById(req.params.id, function(err, foundCamground){
-        if(err){
-            res.redirect("/campgrounds");
-        }else{
-            res.render("campgrounds/edit", {campground: foundCamground});
-        }
-    });
+    if(req.isAuthenticated()){
+        Campground.findById(req.params.id, function(err, foundCamground){
+            if(err){
+                res.redirect("/campgrounds");
+            }else{
+                if(foundCampground.author.id.equals(req.user._id)){
+                    res.render("campgrounds/edit", {campground: foundCamground});
+                }else{
+                    res.send
+                }
+            }
+        });
+
+    }else{
+        console.log("You need to loggin");
+    }
 });
 
 router.put("/:id", function(req, res){
