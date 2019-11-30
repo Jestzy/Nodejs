@@ -1,9 +1,12 @@
+// mongod --dbpath C:\\data\db --storageEngine=mmapv1
+
 var express = require("express");
 var app = express();
 var bodyParser    = require("body-parser");
 var mongoose      = require("mongoose");
 var Campground    = require("./models/campgrounds"),
     passport      = require("passport"),
+    methodOverride = require("method-override"),
     LocalStrategy = require("passport-local"),
     SeedDB        = require("./seeds"),
     User          = require("./models/User")
@@ -18,6 +21,7 @@ mongoose.connect('mongodb://localhost:27017/yelp_camp',
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method"));
 SeedDB();
 
 // PASSPORT CONFIG

@@ -7,9 +7,12 @@ var User = require("../models/User");
 router.get("/", function(req, res){
     res.render("landing");
 });
+
+
 // ==========
 // AUTH ROUTE
 // ==========
+
 //  show register form
 router.get("/register", function(req, res){
     res.render("register");
@@ -28,10 +31,12 @@ router.post("/register", function(req, res){
         });
     });
 });
+
 //show login form
 router.get("/login", function(req, res){
     res.render("login");
 });
+
 //handel login logic
 router.post("/login", passport.authenticate("local", 
     {
@@ -45,6 +50,7 @@ router.get("/logout", function(req, res){
     res.redirect("/campgrounds");
 });
 
+//middleware
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
