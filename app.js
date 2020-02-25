@@ -44,7 +44,7 @@ app.use(function(req, res, next){
     res.locals.error = req.flash("error"); 
     res.locals.success = req.flash("success");
     next();
-})
+});
 
 app.use(indexRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
